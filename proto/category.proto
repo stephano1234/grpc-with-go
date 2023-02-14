@@ -1,0 +1,37 @@
+syntax = "proto3";
+package pb;
+option go_package = "internal/pb";
+
+message Blank {}
+
+message Category {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message CreateCategoryResquest {
+    string name = 1;
+    string description = 2;
+}
+
+message CreateCategoryResponse {
+    Category category = 1;
+}
+
+message QueryCategoryResponse {
+    repeated Category categories = 1;
+}
+
+message GetCategoryRequest {
+    string id = 1;
+}
+
+service CategoryService {
+    rpc CreateCategory (CreateCategoryResquest) returns (CreateCategoryResponse);
+    rpc QueryCategory (Blank) returns (QueryCategoryResponse);
+    rpc GetCategory (GetCategoryRequest) returns (Category);
+    rpc UpdateCategory (Category) returns (Blank);
+    rpc CreateCategoryStream (stream CreateCategoryResquest) returns (QueryCategoryResponse);
+    rpc CreateCategoryStreamBidirectional (stream CreateCategoryResquest) returns (stream Category);
+}

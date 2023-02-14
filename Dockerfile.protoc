@@ -1,0 +1,14 @@
+FROM golang:1.19
+
+WORKDIR /usr/src/grpc-go
+
+RUN apt update && \
+    apt install -y protobuf-compiler
+
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28 && \
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+
+ENTRYPOINT protoc --go_out=. --go-grpc_out=. proto/category.proto
+
+# docker build -t stephano1234/protoc -f Dockerfile.protoc .
+# docker run --rm -v "$(pwd)"/:/usr/src/grpc-go stephano1234/protoc
